@@ -40,57 +40,57 @@ let addtoDb = inflight (data: Json) => {
 // let getTasks = new cloud.Function(@inflight("./Handlers/Get.js")) as "get tasks";
 
 // lambda functions
-let addTask = new cloud.Function(inflight (reqBody) => {
-  // let payload =  Json.parse(str.fromJson(reqBody!));
-  let res = Handlers.Add(counter.inc(), addtoDb, reqBody!);
-  return res;
-}) as "add task";
+// let addTask = new cloud.Function(inflight (reqBody) => {
+//   // let payload =  Json.parse(str.fromJson(reqBody!));
+//   let res = Handlers.Add(counter.inc(), addtoDb, reqBody!);
+//   return res;
+// }) as "add task";
 
-let deleteTask = new cloud.Function(inflight (taskid) => {
-  let response = Handlers.Delete(deleteFromDb, {id: taskid});
-  return response;
-}) as "delete task";
+// let deleteTask = new cloud.Function(inflight (taskid) => {
+//   let response = Handlers.Delete(deleteFromDb, {id: taskid});
+//   return response;
+// }) as "delete task";
 
-let getTasks = new cloud.Function(inflight () => {
-  let response = Handlers.Getter(scanDb);
-  return response;
-}) as "get tasks";
+// let getTasks = new cloud.Function(inflight () => {
+//   let response = Handlers.Getter(scanDb);
+//   return response;
+// }) as "get tasks";
 
 
 // API endpoints
 
 // without lambda functions
 
-// api.get("/", inflight () => {
-//   let res = Handlers.Getter(scanDb);
-//   return cloud.ApiResponse.parseJson(res);
-// });
-
-// api.post("/add", inflight (request: cloud.ApiRequest) => {
-//   let res = Handlers.Add(counter.inc(), addtoDb, request.body!);
-//   return cloud.ApiResponse.parseJson(res);
-// });
-
-// api.delete("/delete/:id", inflight (request: cloud.ApiRequest) => {
-//   let res = Handlers.Delete( deleteFromDb, {id: request.vars.get("id")});
-//   return cloud.ApiResponse.parseJson(res);
-  
-// });
-
-// using lambda function
-
 api.get("/", inflight () => {
-  let res = getTasks.invoke();
-  return cloud.ApiResponse.parseJson(str.fromJson(res!));
+  let res = Handlers.Getter(scanDb);
+  return cloud.ApiResponse.parseJson(res);
 });
 
 api.post("/add", inflight (request: cloud.ApiRequest) => {
-  let res = addTask.invoke(request.body);
-  return cloud.ApiResponse.parseJson(str.fromJson(res!));
+  let res = Handlers.Add(counter.inc(), addtoDb, request.body!);
+  return cloud.ApiResponse.parseJson(res);
 });
 
 api.delete("/delete/:id", inflight (request: cloud.ApiRequest) => {
-  let res = deleteTask.invoke(request.vars.get("id"));
-  return cloud.ApiResponse.parseJson(str.fromJson(res!));
+  let res = Handlers.Delete( deleteFromDb, {id: request.vars.get("id")});
+  return cloud.ApiResponse.parseJson(res);
   
 });
+
+// using lambda function
+
+// api.get("/", inflight () => {
+//   let res = getTasks.invoke();
+//   return cloud.ApiResponse.parseJson(str.fromJson(res!));
+// });
+
+// api.post("/add", inflight (request: cloud.ApiRequest) => {
+//   let res = addTask.invoke(request.body);
+//   return cloud.ApiResponse.parseJson(str.fromJson(res!));
+// });
+
+// api.delete("/delete/:id", inflight (request: cloud.ApiRequest) => {
+//   let res = deleteTask.invoke(request.vars.get("id"));
+//   return cloud.ApiResponse.parseJson(str.fromJson(res!));
+  
+// });
