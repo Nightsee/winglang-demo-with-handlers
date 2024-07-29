@@ -58,20 +58,6 @@ let getTasks = new cloud.Function(inflight () => {
 
 // API endpoints
 
-// without lambda functions
-// api.get("/", inflight () => {
-//   let res = Handlers.Getter(scanDb);
-//   return cloud.ApiResponse.parseJson(res);
-// });
-// api.post("/add", inflight (request: cloud.ApiRequest) => {
-//   let res = Handlers.Add(counter.inc(), addtoDb, request.body!);
-//   return cloud.ApiResponse.parseJson(res);
-// });
-// api.delete("/delete/:id", inflight (request: cloud.ApiRequest) => {
-//   let res = Handlers.Delete( deleteFromDb, {id: request.vars.get("id")});
-//   return cloud.ApiResponse.parseJson(res);
-// });
-
 // using lambda function
 
 api.get("/", inflight () => {
